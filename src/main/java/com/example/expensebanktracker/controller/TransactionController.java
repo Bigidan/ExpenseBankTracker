@@ -4,7 +4,6 @@ import com.example.expensebanktracker.dto.TransactionDTO;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.expensebanktracker.service.TransactionService;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -66,10 +65,5 @@ public class TransactionController {
                 LocalDate.parse(from),
                 LocalDate.parse(to)
         );
-    }
-
-    @PostMapping("/import")
-    public void importCsv(@RequestParam("file") MultipartFile file) throws Exception {
-        service.importCsv(file);
     }
 }

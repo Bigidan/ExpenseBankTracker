@@ -133,6 +133,13 @@
         <button class="btn-add" type="submit">Save</button>
     </form>
 
+    <h2>Import CSV</h2>
+
+    <form method="post" action="/transactions-page/import" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".csv" required />
+        <button class="btn-add" type="submit">Upload CSV</button>
+    </form>
+
 </div>
 </body>
 </html>

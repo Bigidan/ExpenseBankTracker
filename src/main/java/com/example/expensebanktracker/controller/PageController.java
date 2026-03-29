@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -72,5 +73,17 @@ public class PageController {
         model.addAttribute("editTransaction", transaction);
 
         return "transactions";
+    }
+
+    @PostMapping("/transactions-page/import")
+    public String importCsv(@RequestParam("file") MultipartFile file,
+                            HttpSession session) throws Exception {
+
+        User user = (User) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
+
+        service.importCsv(file, user);
+
+        return "redirect:/transactions-page";
     }
 }

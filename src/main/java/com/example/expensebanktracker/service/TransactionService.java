@@ -4,14 +4,13 @@ import com.example.expensebanktracker.dto.TransactionDTO;
 import com.example.expensebanktracker.entity.Category;
 import com.example.expensebanktracker.entity.User;
 import com.example.expensebanktracker.repository.CategoryRepository;
+import com.example.expensebanktracker.util.CsvHelper;
 import org.springframework.stereotype.Service;
 
 import com.example.expensebanktracker.entity.Transaction;
 import com.example.expensebanktracker.repository.TransactionRepository;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,19 +74,11 @@ public class TransactionService {
                 .collect(Collectors.toList());
     }
 
-    public void importCsv(MultipartFile file) throws Exception {
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(file.getInputStream()));
+    public void importCsv(MultipartFile file, User user) throws Exception {
+        List<Transaction> transactions = CsvHelper.parse(file);
 
-        String line;
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split(",");
-
-            Transaction t = new Transaction();
-            t.setDate(LocalDate.parse(parts[0]));
-            t.setAmount(Double.parseDouble(parts[1]));
-            t.setDescription(parts[2]);
-
+        for (Transaction t : transactions) {
+            t.setUser(user);
             repository.save(t);
         }
     }
