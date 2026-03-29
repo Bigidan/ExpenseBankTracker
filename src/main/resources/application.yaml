@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: ExpenseBankTracker
+  datasource:
+    url: jdbc:postgresql://localhost:5432/expense_db
+    username: postgres
+    password: DasKov05
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

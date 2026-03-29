@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk-UA">
+<head>
+    <title>Transactions</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px;
+            width: calc(100% - 20px);
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .btn-add {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-edit {
+            background: #3498db;
+            color: white;
+        }
+
+        .actions form {
+            display: inline;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>💸 Transactions</h1>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+
+        <tr th:each="t : ${transactions}">
+            <td th:text="${t.id}"></td>
+            <td th:text="${t.amount}"></td>
+            <td th:text="${t.description}"></td>
+            <td th:text="${t.date}"></td>
+
+            <td class="actions">
+                <!-- DELETE -->
+                <form th:action="@{'/transactions-page/delete/' + ${t.id}}" method="post">
+                    <button class="btn-delete">Delete</button>
+                </form>
+
+                <!-- EDIT -->
+                <form th:action="@{'/transactions-page/edit/' + ${t.id}}" method="get">
+                    <button class="btn-edit">Edit</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <h2>Add / Edit Transaction</h2>
+
+    <form method="post" action="/transactions-page">
+        <input type="hidden" name="id" th:value="${editTransaction?.id}" />
+
+        <input type="text" name="amount" placeholder="Amount"
+               th:value="${editTransaction?.amount}" required />
+
+        <input type="text" name="description" placeholder="Description"
+               th:value="${editTransaction?.description}" required />
+
+        <input type="date" name="date"
+               th:value="${editTransaction?.date}" required />
+
+        <button class="btn-add" type="submit">Save</button>
+    </form>
+
+</div>
+</body>
+</html>
